@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="hbi.core.item.mapper.ShopItemMapper">
+    <resultMap id="BaseResultMap" type="hbi.core.item.dto.ShopItem">
+        <result column="ITEM_ID" property="itemId" jdbcType="DECIMAL" />
+        <result column="SHOP_ID" property="shopId" jdbcType="DECIMAL" />
+        <result column="ITEM_NAME" property="itemName" jdbcType="VARCHAR" />
+        <result column="ITEM_PRICE" property="itemPrice" jdbcType="DECIMAL" />
+        <result column="ITEM_STOCK" property="itemStock" jdbcType="DECIMAL" />
+
+        <result column="object_version_number" property="objectVersionNumber" jdbcType="DECIMAL" />
+
+    </resultMap>
+
+    <select id="selectItemByShopId" resultMap="BaseResultMap">
+        SELECT *
+        FROM TEST_SHOP_ITEM
+        WHERE (SHOP_ID = #{shopId,jdbcType=DECIMAL} OR #{shopId,jdbcType=DECIMAL} IS NULL)
+    </select>
+
+    <delete id="deleteItemByShopId">
+        DELETE
+        FROM TEST_SHOP_ITEM
+        WHERE SHOP_ID = #{shopId,jdbcType=DECIMAL}
+    </delete>
+
+
+</mapper>

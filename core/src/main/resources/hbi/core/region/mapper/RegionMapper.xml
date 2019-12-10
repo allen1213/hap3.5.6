@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="hbi.core.region.mapper.RegionMapper">
+    <resultMap id="BaseResultMap" type="hbi.core.region.dto.Region">
+        <result column="REGION_ID" property="regionId" jdbcType="DECIMAL" />
+        <result column="REGION_CODE" property="regionCode" jdbcType="VARCHAR" />
+        <result column="REGION_NAME" property="regionName" jdbcType="VARCHAR" />
+        <result column="PARENT_ID" property="parentId" jdbcType="DECIMAL" />
+        <result column="REGION_LEVEL" property="regionLevel" jdbcType="DECIMAL" />
+        <result column="REGION_ORDER" property="regionOrder" jdbcType="DECIMAL" />
+        <result column="REGION_NAME_EN" property="regionNameEn" jdbcType="VARCHAR" />
+        <result column="REGION_SHORTNAME_EN" property="regionShortnameEn" jdbcType="VARCHAR" />
+    </resultMap>
+    
+    <select id="selectProvince" resultMap="BaseResultMap" parameterType="hbi.core.region.dto.Region">
+        SELECT PARENT_ID,REGION_ID,REGION_NAME
+        FROM REGION
+        WHERE PARENT_ID = 1
+    </select>
+
+    <select id="selectRegion" resultMap="BaseResultMap" parameterType="hbi.core.region.dto.Region">
+        SELECT PARENT_ID,REGION_ID,REGION_NAME
+        FROM REGION
+        WHERE PARENT_ID = #{parentId,jdbcType=DECIMAL}
+    </select>
+
+
+</mapper>

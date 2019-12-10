@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="hbi.core.shop.mapper.ShopMapper">
+    <resultMap id="BaseResultMap" type="hbi.core.shop.dto.Shop">
+        <result column="SHOP_ID" property="shopId" jdbcType="DECIMAL" />
+        <result column="SHOP_NAME" property="shopName" jdbcType="VARCHAR" />
+        <result column="SHOP_ADDRESS" property="shopAddress" jdbcType="VARCHAR" />
+        <result column="TOTAL_AMOUNT" property="totalAmount" jdbcType="DECIMAL" />
+        <result column="CREATE_TIME" property="createTime" jdbcType="DATE" />
+        <result column="object_version_number" property="objectVersionNumber" jdbcType="DECIMAL" />
+
+    </resultMap>
+
+    <select id="getNextId" resultType="java.lang.Integer">
+        SELECT AUTO_INCREMENT
+        FROM INFORMATION_SCHEMA.TABLES
+        WHERE TABLE_NAME='TEST_SHOP'
+    </select>
+
+    <select id="selectShopWithTotalAmount" resultMap="BaseResultMap">
+
+        SELECT S.SHOP_ID,S.SHOP_NAME,S.SHOP_ADDRESS,SUM(I.ITEM_PRICE) AS TOTAL_AMOUNT,S.CREATE_TIME,S.OBJECT_VERSION_NUMBER
+        FROM TEST_SHOP S LEFT JOIN TEST_SHOP_ITEM I
+        ON S.SHOP_ID = I.SHOP_ID
+        GROUP BY S.SHOP_ID,S.SHOP_NAME,S.SHOP_ADDRESS,S.CREATE_TIME
+
+    </select>
+
+    <select id="findAll" resultMap="BaseResultMap"  parameterType="hbi.core.shop.dto.Shop">
+
+        SELECT *
+             FROM TEST_SHOP
+        <where>
+            <if test="shopId != null">
+               and  SHOP_ID = #{shopId,jdbcType=DECIMAL}
+            </if>
+            <if test="shopName != null">
+               and  SHOP_NAME = #{shopName,jdbcType=VARCHAR}
+            </if>
+        </where>
+
+    </select>
+
+    <select id="selectByShopId" resultMap="BaseResultMap">
+        SELECT *
+        FROM TEST_SHOP
+        WHERE SHOP_ID = #{shopId,jdbcType=DECIMAL}
+    </select>
+
+
+</mapper>
